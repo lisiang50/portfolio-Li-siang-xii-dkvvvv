@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Li Siang | Creative Portfolio</title>
+<style>
+:root{--blue:#0b3478;--ice:#eaf5ff}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;font-family:Georgia,'Times New Roman',serif;color:var(--blue);background:#061b49;overflow-x:hidden}
+body:before,body:after{content:"";position:fixed;inset:-30%;pointer-events:none;z-index:-1}
+body:before{background:radial-gradient(circle at 20% 25%,#8bc9ff88,transparent 24%),radial-gradient(circle at 80% 65%,#d8efff66,transparent 28%),linear-gradient(135deg,#061b49,#1263b8,#061b49);animation:aurora 16s ease-in-out infinite alternate}
+body:after{background-image:radial-gradient(#fff 1px,transparent 1.5px),radial-gradient(#c9eaff 1px,transparent 1.5px);background-size:90px 90px,140px 140px;background-position:0 0,40px 55px;opacity:.55;animation:stars 24s linear infinite}
+@keyframes aurora{to{transform:translate(5%,3%) scale(1.12);filter:hue-rotate(18deg)}}
+@keyframes stars{to{background-position:90px 90px,180px 195px}}
+header{position:fixed;z-index:5;top:0;left:0;right:0;padding:14px 5vw;display:flex;justify-content:space-between;align-items:center;background:#071d4dbb;backdrop-filter:blur(14px);border-bottom:1px solid #ffffff30;color:white}
+.brand{font-size:18px;letter-spacing:2px}.nav{display:flex;gap:8px;align-items:center}
+.nav button,.arrow{border:1px solid #ffffff70;color:white;background:#ffffff18;border-radius:30px;padding:9px 14px;cursor:pointer;font:inherit}
+.nav button:hover,.arrow:hover{background:#ffffff40}
+main{padding:84px 4vw 30px}
+.slide{min-height:calc(100vh - 110px);display:none;align-items:center;justify-content:center;position:relative}
+.slide.active{display:flex;animation:enter .7s ease both}
+@keyframes enter{from{opacity:0;transform:translateY(18px) scale(.985)}to{opacity:1;transform:none}}
+.frame{width:min(1100px,94vw);max-height:calc(100vh - 160px);object-fit:contain;border-radius:22px;box-shadow:0 24px 80px #00133899;animation:float 7s ease-in-out infinite;outline:1px solid #ffffff70}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.controls{position:fixed;z-index:6;bottom:18px;left:50%;transform:translateX(-50%);display:flex;gap:12px;align-items:center;padding:8px 12px;background:#071d4dcc;border:1px solid #ffffff50;border-radius:40px;backdrop-filter:blur(12px);color:white}
+#count{font:14px Arial;min-width:48px;text-align:center}.dots{display:flex;gap:6px}.dot{width:8px;height:8px;border:0;border-radius:50%;background:#ffffff70;padding:0;cursor:pointer}.dot.active{background:white;transform:scale(1.4)}
+.hint{position:fixed;right:18px;bottom:24px;color:#dcefff99;font:12px Arial}
+@media(max-width:650px){header{padding:12px}.brand{font-size:14px}.nav button{padding:7px 9px;font-size:12px}.nav button:nth-child(n+4){display:none}main{padding:75px 2vw 70px}.frame{width:98vw;border-radius:12px;max-height:78vh}.hint{display:none}.slide{min-height:calc(100vh - 130px)}}
+</style>
+</head>
+<body>
+<header><div class="brand">✦ LI SIANG · PORTFOLIO</div><nav class="nav">
+<button onclick="go(0)">Home</button><button onclick="go(1)">About</button><button onclick="go(2)">Works</button><button onclick="go(3)">Skills</button><button onclick="go(4)">Contact</button></nav></header>
+<main>
+<section class="slide active" aria-label="Portfolio cover"><img class="frame" src="01-cover.jpg" alt="Portfolio cover"></section>\n<section class="slide " aria-label="About me"><img class="frame" src="02-about-me.jpg" alt="About me"></section>\n<section class="slide " aria-label="My works"><img class="frame" src="03-my-works.jpg" alt="My works"></section>\n<section class="slide " aria-label="Skills and expertise"><img class="frame" src="04-skills.jpg" alt="Skills and expertise"></section>\n<section class="slide " aria-label="Contact information"><img class="frame" src="05-contact.jpg" alt="Contact information"></section>\n<section class="slide " aria-label="Thank you"><img class="frame" src="06-thank-you.jpg" alt="Thank you"></section>\n<section class="slide " aria-label="School identity"><img class="frame" src="07-school.jpg" alt="School identity"></section>\n<section class="slide " aria-label="Portfolio quote"><img class="frame" src="08-quote.jpg" alt="Portfolio quote"></section>\n<section class="slide " aria-label="Decorative outro"><img class="frame" src="09-outro.jpg" alt="Decorative outro"></section>\n</main>
+<div class="controls"><button class="arrow" onclick="step(-1)" aria-label="Previous slide">←</button><div class="dots" id="dots"></div><span id="count">1 / 9</span><button class="arrow" onclick="step(1)" aria-label="Next slide">→</button></div>
+<div class="hint">Use ← → keys to navigate</div>
+<script>
+const slides=[...document.querySelectorAll('.slide')],dots=document.getElementById('dots'),count=document.getElementById('count');let current=0;
+slides.forEach((_,i)=>{let b=document.createElement('button');b.className='dot'+(i===0?' active':'');b.setAttribute('aria-label','Go to page '+(i+1));b.onclick=()=>go(i);dots.appendChild(b)});
+function go(n){current=(n+slides.length)%slides.length;slides.forEach((s,i)=>s.classList.toggle('active',i===current));[...dots.children].forEach((d,i)=>d.classList.toggle('active',i===current));count.textContent=(current+1)+' / '+slides.length}
+function step(d){go(current+d)}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')step(1);if(e.key==='ArrowLeft')step(-1)});
+let startX=0;document.addEventListener('touchstart',e=>startX=e.touches[0].clientX,{passive:true});document.addEventListener('touchend',e=>{let dx=e.changedTouches[0].clientX-startX;if(Math.abs(dx)>55)step(dx<0?1:-1)},{passive:true});
+</script></body></html>
